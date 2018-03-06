@@ -1,5 +1,7 @@
 package com.mingle.kotlinlearning.views
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,20 +15,12 @@ import com.mingle.kotlinlearning.viewmodels.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private var a : String? = null
-    private val mainViewModel = MainViewModel()
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.setVariable(BR.mainviewmodel, mainViewModel)
-
-//        binding?.apply {
-//            edUserName.setText("Nguyen Thi Hoang Sa")
-//            edAge.setText("12")
-//            edEmail.setText("lisa.nguyen19@gmail.com")
-//            edCompany.setText("Mingle")
-//        }
+        binding.mainviewmodel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         a = null
         exampleFun()
 
