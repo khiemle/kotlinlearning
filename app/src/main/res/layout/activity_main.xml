@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
-            name="user"
-            type="com.mingle.kotlinlearning.models.User" />
+            name="mainviewmodel"
+            type="com.mingle.kotlinlearning.viewmodels.MainViewModel"/>
     </data>
 
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.mingle.kotlinlearning.MainActivity">
+        tools:context="com.mingle.kotlinlearning.views.MainActivity">
 
 
         <TextView
@@ -34,7 +35,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="User name"
-            android:text="@{user.name}"
+            android:text="@{mainviewmodel.userModel.name}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView6"
@@ -58,7 +59,7 @@
             android:layout_marginTop="60dp"
             android:ems="10"
             android:hint="Age"
-            android:text="@{Integer.toString(user.age)}"
+            android:text="@{Integer.toString(mainviewmodel.userModel.age)}"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.666"
@@ -83,7 +84,7 @@
             android:layout_marginTop="60dp"
             android:ems="10"
             android:hint="Email"
-            android:text="@{user.email}"
+            android:text="@{mainviewmodel.userModel.email}"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.638"
@@ -108,11 +109,40 @@
             android:layout_marginTop="60dp"
             android:ems="10"
             android:hint="Company"
-            android:text="@{user.company}"
+            android:text="@{mainviewmodel.userModel.company}"
             android:inputType="textCapWords"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toEndOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/edEmail" />
+
+        <Button
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Refresh"
+            android:onClick="@{() -> mainviewmodel.refresh()}"
+            android:clickable="@{mainviewmodel.isLoading.get() ? false : true}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="@{mainviewmodel.isLoading.get() ? View.VISIBLE : View.GONE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </layout>

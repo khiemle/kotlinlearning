@@ -2,9 +2,12 @@ package com.mingle.kotlinlearning.models
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.os.Handler
 import com.mingle.kotlinlearning.BR
 
 class User(name : String, age : Int?, email : String?, company : String?) : BaseObservable() {
+
+    constructor() : this("", null, null, null)
 
     @get:Bindable
     var name : String = ""
@@ -40,4 +43,14 @@ class User(name : String, age : Int?, email : String?, company : String?) : Base
         this.email = email
     }
 
+    fun refreshData(onDataReadyCallback: OnDataReadyCallback) {
+        Handler().postDelayed({
+            onDataReadyCallback.onDataReady("new data from refresh data")
+        },2000)
+    }
+
+}
+
+interface OnDataReadyCallback {
+    fun onDataReady(data : String)
 }
