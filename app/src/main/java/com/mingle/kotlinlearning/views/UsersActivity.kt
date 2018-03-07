@@ -14,5 +14,6 @@ class UsersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_users)
         binding.usersViewModel = ViewModelProviders.of(this).get(UsersViewModel::class.java)
+        binding.usersViewModel?.getListUsers()
     }
 }
