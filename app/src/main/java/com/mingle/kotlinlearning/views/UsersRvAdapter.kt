@@ -24,4 +24,8 @@ class UsersRvAdapter(private var items : ArrayList<User>) : RecyclerView.Adapter
         }
     }
 
+    fun replaceData(newData: ArrayList<User>) {
+        items = newData
+    }
+
 }
