@@ -48,23 +48,9 @@ class User(name : String, age : Int?, email : String?, company : String?) : Base
             onDataReadyCallback.onDataReady("new data from refresh data")
         },2000)
     }
-
-    companion object {
-        fun getListUsers(onListUsersReadyCallback: OnListUsersReadyCallback) {
-            Handler().postDelayed({
-                val listUsers = ArrayList<User>()
-                (1..10).mapTo(listUsers) { User(name = "User $it", age = 29, email = "user$it@gmail.com", company = "Mingle") }
-                onListUsersReadyCallback.onListUsersReady(listUsers)
-            },2000)
-        }
-    }
-
 }
 
 interface OnDataReadyCallback {
     fun onDataReady(data : String)
 
-}
-interface OnListUsersReadyCallback {
-    fun onListUsersReady(data : ArrayList<User>)
 }
