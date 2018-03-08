@@ -3,9 +3,9 @@ package com.mingle.kotlinlearning.viewmodels
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import com.mingle.kotlinlearning.models.OnUsersReadyCallback
 import com.mingle.kotlinlearning.models.User
 import com.mingle.kotlinlearning.models.UserRepository
+import com.mingle.kotlinlearning.models.datasources.OnUsersReadyCallback
 
 class UsersViewModel : ViewModel() {
 
