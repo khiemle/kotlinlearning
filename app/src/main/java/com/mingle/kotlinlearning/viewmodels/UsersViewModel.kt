@@ -7,8 +7,8 @@ import android.databinding.ObservableField
 import com.mingle.kotlinlearning.models.User
 import com.mingle.kotlinlearning.models.UserRepository
 import com.mingle.kotlinlearning.models.datasources.NetManager
-import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
 
 class UsersViewModel(context: Application) : AndroidViewModel(context) {
 
@@ -18,11 +18,7 @@ class UsersViewModel(context: Application) : AndroidViewModel(context) {
     lateinit var disposable: Disposable
     fun getListUsers() {
         isLoading.set(true)
-        userRepository.getUsers().subscribe(object : Observer<ArrayList<User>> {
-            override fun onSubscribe(d: Disposable) {
-                disposable = d
-            }
-
+        disposable = userRepository.getUsers().subscribeWith(object : DisposableObserver<ArrayList<User>>(){
             override fun onComplete() {
                 isLoading.set(false)
             }
@@ -33,7 +29,6 @@ class UsersViewModel(context: Application) : AndroidViewModel(context) {
 
             override fun onError(e: Throwable) {
             }
-
         })
     }
 
