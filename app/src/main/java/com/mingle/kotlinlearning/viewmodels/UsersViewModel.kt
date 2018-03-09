@@ -3,10 +3,11 @@ package com.mingle.kotlinlearning.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableField
 import com.mingle.kotlinlearning.models.User
 import com.mingle.kotlinlearning.models.UserRepository
-import com.mingle.kotlinlearning.models.datasources.NetManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -17,9 +18,17 @@ operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
     add(disposable)
 }
 
-class UsersViewModel(context: Application) : AndroidViewModel(context) {
+class UsersViewModelFactory(private val userRepository: UserRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(UsersViewModel::class.java)) {
+            return UsersViewModel(userRepository) as T
+        }
+        throw IllegalAccessException("Unknown ViewModel Class")
+    }
+}
 
-    private val userRepository = UserRepository(NetManager(context))
+class UsersViewModel(private var userRepository: UserRepository) : ViewModel() {
+
     var users = MutableLiveData<ArrayList<User>>()
     val isLoading = ObservableField(false)
     private val compositeDisposable = CompositeDisposable()

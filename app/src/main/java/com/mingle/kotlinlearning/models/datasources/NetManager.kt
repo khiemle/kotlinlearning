@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 
-class NetManager(private val context: Application) {
+class NetManager(private val context: Context) {
     private var status: Boolean? = false
     val isConnectedToInternet: Boolean?
         get() {
