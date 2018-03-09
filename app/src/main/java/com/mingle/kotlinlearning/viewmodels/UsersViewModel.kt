@@ -7,7 +7,7 @@ import android.databinding.ObservableField
 import com.mingle.kotlinlearning.models.User
 import com.mingle.kotlinlearning.models.UserRepository
 import com.mingle.kotlinlearning.models.datasources.NetManager
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 
 class UsersViewModel(context: Application) : AndroidViewModel(context) {
@@ -15,10 +15,10 @@ class UsersViewModel(context: Application) : AndroidViewModel(context) {
     private val userRepository = UserRepository(NetManager(context))
     var users = MutableLiveData<ArrayList<User>>()
     val isLoading = ObservableField(false)
-    lateinit var disposable: Disposable
+    private val compositeDisposable = CompositeDisposable()
     fun getListUsers() {
         isLoading.set(true)
-        disposable = userRepository.getUsers().subscribeWith(object : DisposableObserver<ArrayList<User>>(){
+        val disposable = userRepository.getUsers().subscribeWith(object : DisposableObserver<ArrayList<User>>(){
             override fun onComplete() {
                 isLoading.set(false)
             }
@@ -30,12 +30,13 @@ class UsersViewModel(context: Application) : AndroidViewModel(context) {
             override fun onError(e: Throwable) {
             }
         })
+        compositeDisposable.add(disposable)
     }
 
     override fun onCleared() {
         super.onCleared()
-        if (!disposable.isDisposed) {
-            disposable.dispose()
+        if (!compositeDisposable.isDisposed) {
+            compositeDisposable.dispose()
         }
     }
 }
