@@ -19,7 +19,6 @@ class UsersActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_users)
         val usersViewModel = ViewModelProviders.of(this).get(UsersViewModel::class.java)
         binding.usersViewModel = usersViewModel
-        binding.usersViewModel?.getListUsers()
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = usersRvAdapter
         usersViewModel.users.observe(this, Observer <ArrayList<User>>{
@@ -28,6 +27,8 @@ class UsersActivity : AppCompatActivity() {
                 usersRvAdapter.notifyDataSetChanged()
             }
         })
+
+        binding.usersViewModel?.getListUsers()
 
     }
 }

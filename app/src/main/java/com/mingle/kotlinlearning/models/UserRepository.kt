@@ -1,31 +1,23 @@
 package com.mingle.kotlinlearning.models
 
 import com.mingle.kotlinlearning.models.datasources.NetManager
-import com.mingle.kotlinlearning.models.datasources.OnUsersReadyCallback
 import com.mingle.kotlinlearning.models.datasources.UserLocalDataSource
 import com.mingle.kotlinlearning.models.datasources.UserRemoteDataSource
+import io.reactivex.Observable
 
 class UserRepository(private val netManager: NetManager) {
     private val localDataSource = UserLocalDataSource()
     private val remoteDataSource = UserRemoteDataSource()
 
-    fun getUsers(onUsersReadyCallback: OnUsersReadyCallback) {
+    fun getUsers() : Observable<ArrayList<User>>{
         netManager.isConnectedToInternet?.let {
             if (it) {
-                remoteDataSource.getUsers(object : OnUsersReadyCallback {
-                    override fun onUsersReady(data: ArrayList<User>) {
-                        onUsersReadyCallback.onUsersReady(data)
-                    }
-                })
-            } else {
-                localDataSource.getUsers(object : OnUsersReadyCallback {
-                    override fun onUsersReady(data: ArrayList<User>) {
-                        onUsersReadyCallback.onUsersReady(data)
-                    }
-                })
+                return remoteDataSource.getUsers()
             }
         }
+        return localDataSource.getUsers()
     }
+
     fun saveUsers(data : ArrayList<User>) {
         //TODO save data
     }
