@@ -12,14 +12,12 @@ class UserRepository(private val netManager: NetManager) {
     fun getUsers() : Observable<ArrayList<User>>{
         netManager.isConnectedToInternet?.let {
             if (it) {
-                return remoteDataSource.getUsers()
+                return remoteDataSource.getUsers().flatMap {
+                    return@flatMap remoteDataSource.saveUsers(it).toSingleDefault(it).toObservable()
+                }
             }
         }
         return localDataSource.getUsers()
-    }
-
-    fun saveUsers(data : ArrayList<User>) {
-        //TODO save data
     }
 }
 
