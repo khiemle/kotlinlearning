@@ -4,8 +4,9 @@ import com.mingle.kotlinlearning.models.datasources.NetManager
 import com.mingle.kotlinlearning.models.datasources.UserLocalDataSource
 import com.mingle.kotlinlearning.models.datasources.UserRemoteDataSource
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class UserRepository(private val netManager: NetManager) {
+class UserRepository @Inject constructor (var netManager: NetManager) {
     private val localDataSource = UserLocalDataSource()
     private val remoteDataSource = UserRemoteDataSource()
 
